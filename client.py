@@ -1,30 +1,41 @@
 import socket
 import sys
 
-# Create a TCP/IP socket
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+def client(player, address, port):
+	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	server_address = (address, port)
+	print("Hi", player,"!", "Trying to connect to", address,":",port)
+	sock.connect(server_address)
+	try:
+		data = sock.recv(256)
+		print(data.decode())
+		message = "Hi! You're playing against " + player
+		sock.sendall(message.encode())
+		terminate = False
+	except:
+		print("There was an unexpected error!")
+	while terminate!=True:
+		try:
+		    # Send data
+		    print("In try")
+		    choice = input("Please choose rock/paper/scissors: ")
+		    # sys.stderr, 'sending "%s"' % message
+		    sock.sendall(choice.lower().encode())
+		    result = sock.recv(128)
+		    printResult(int(result.decode()))
 
-# Connect the socket to the port where the server is listening
-server_address = ("172.17.0.1", 5005)
-sock.connect(server_address)
+		finally:
+			terminate = True;
+		    # print >>sys.stderr, 'closing socket'
+	sock.close()
 
-try:
-    
-    # Send data
-    message = "Usama panchod"
-    # sys.stderr, 'sending "%s"' % message
-    sock.sendall(message.encode())
+def printResult(result):
+	if result == 1:
+		print("Congratulations! You won the game.")
+	elif result == -1:
+		print("Sorry! You lost the game :(")
+	elif result == 0:
+		print("It's a draw!")
 
-    # Look for the response
-    amount_received = 0
-    amount_expected = len(message)
-    
-    while amount_received < amount_expected:
-        data = sock.recv(16)
-        amount_received += len(data)
-        # sys.stderr, 'received "%s"' % data
-
-finally:
-    # print >>sys.stderr, 'closing socket'
-    sock.close()
+client("Usama", "10.5.11.109", 5005)
