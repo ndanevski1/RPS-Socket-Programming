@@ -18,7 +18,6 @@ def client(player, address, port):
 	while terminate!=True:
 		try:
 		    # Send data
-		    print("In try")
 		    choice = input("Please choose rock/paper/scissors: ")
 		    # sys.stderr, 'sending "%s"' % message
 		    sock.sendall(choice.lower().encode())
@@ -26,7 +25,7 @@ def client(player, address, port):
 		    printResult(int(result.decode()))
 
 		finally:
-			terminate = True;
+			terminate = True
 		    # print >>sys.stderr, 'closing socket'
 	sock.close()
 
@@ -38,4 +37,4 @@ def printResult(result):
 	elif result == 0:
 		print("It's a draw!")
 
-client("Usama", "10.5.11.109", 5005)
+client("Usama", "10.5.35.107", 5005)
