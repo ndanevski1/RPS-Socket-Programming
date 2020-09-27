@@ -1,5 +1,6 @@
 import socket
 import sys
+import time
 
 
 def client(player, address, port):
@@ -17,25 +18,30 @@ def client(player, address, port):
 		print("There was an unexpected error!")
 	while terminate!=True:
 		try:
-		    # Send data
-		    print("In try")
-		    choice = input("Please choose rock/paper/scissors: ")
-		    # sys.stderr, 'sending "%s"' % message
-		    sock.sendall(choice.lower().encode())
-		    result = sock.recv(128)
-		    printResult(int(result.decode()))
+            choice = input("Please choose rock/paper/scissors: ")
+
+            sock.sendall(choice.lower().encode())
+            result = sock.recv(128)
+            countdown_output()
+            print_result(int(result.decode()))
 
 		finally:
 			terminate = True;
 		    # print >>sys.stderr, 'closing socket'
 	sock.close()
 
-def printResult(result):
-	if result == 1:
-		print("Congratulations! You won the game.")
-	elif result == -1:
-		print("Sorry! You lost the game :(")
-	elif result == 0:
-		print("It's a draw!")
+def countdown_output():
+    print("The outcome of the game is ...")
+    countdown = 3
+    while countdown > 0:
+        print(countdown)
+        countdown -= 1
+        time.sleep(1)
 
-client("Usama", "10.5.11.109", 5005)
+def print_result(result):
+    if result == 1:
+        print("Congratulations! You won the game! :)")
+    elif result == -1:
+        print("Sorry! You lost the game! :(")
+    elif result == 0:
+        print("It's a draw! :|")
