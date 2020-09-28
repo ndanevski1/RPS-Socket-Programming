@@ -3,7 +3,8 @@
 import socket
 import sys
 import time
-
+from netifaces import AF_INET, AF_INET6, AF_LINK
+import netifaces as ni
 
 
 # decides the choice from the server's perspective
@@ -21,6 +22,7 @@ def decide_result(server_choice, client_choice):
         return 1
     else:
         return 0
+
 
 def countdown_output():
     print("The outcome of the game is ...")
@@ -47,20 +49,15 @@ def reverse_result(result):
         return 0
 
 
-def server(player, server, port):
-    server_address = (server, port)
+def server(player, port):
+    ip = ni.ifaddresses('en0')[AF_INET][0]['addr']
+    server_address = (ip, port)
     print("Server running!")
     print("Waiting for a client...")
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
     sock.bind(server_address)
     print("Server address & port = ", sock.getsockname()[0], ":", port)
     sock.listen(1)
-
-    # while True:
-
-        # wait for a connection
-
     (connection, client_address) = sock.accept()
 
     # sending greetings
