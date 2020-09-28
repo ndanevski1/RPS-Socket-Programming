@@ -50,13 +50,14 @@ def reverse_result(result):
 
 
 def server(player, port):
-    ip = ni.ifaddresses('en0')[AF_INET][0]['addr']
-    server_address = (ip, port)
+    #ip = ni.ifaddresses('en0')[AF_INET][0]['addr']
     print("Server running!")
     print("Waiting for a client...")
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    ip = socket.gethostbyname(socket.gethostname())
+    server_address = (ip, port)
     sock.bind(server_address)
-    print("Server address & port = ", sock.getsockname()[0], ":", port)
+    print("Server address & port = ", ip, ":", port)
     sock.listen(1)
     (connection, client_address) = sock.accept()
 
