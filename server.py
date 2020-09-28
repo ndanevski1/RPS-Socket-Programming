@@ -10,7 +10,6 @@ import netifaces as ni
 # decides the choice from the server's perspective
 
 def decide_result(server_choice, client_choice):
-	# print(server_choice)
     if client_choice == 'rock' and server_choice == 'scissors' \
         or client_choice == 'scissors' and server_choice == 'paper' \
         or client_choice == 'paper' and server_choice == 'rock':
@@ -50,7 +49,6 @@ def reverse_result(result):
 
 
 def server(player, port):
-    #ip = ni.ifaddresses('en0')[AF_INET][0]['addr']
     print("Server running!")
     print("Waiting for a client...")
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -60,29 +58,16 @@ def server(player, port):
     print("Server address & port = ", ip, ":", port)
     sock.listen(1)
     (connection, client_address) = sock.accept()
-
-    # sending greetings
-
     message = \
         'Hi! You are connected to the server. You are playing against ' \
         + player + '!'
     connection.send(message.encode())
-    
-
-    print("Sent successfully")
     message_from_client = connection.recv(256)
-    print("Received successfully")
     print(message_from_client.decode())
-    
     server_choice = input("Please choose rock/paper/scissors: ")
-
     client_choice = connection.recv(16)
-    # print(client_choice.decode())
     client_choice = client_choice.decode()
-
-    # from perspective of server
     result = decide_result(server_choice,client_choice)
-    # print(result)
     connection.send(str(reverse_result(result)).encode())
     countdown_output()
     print_result(result)
