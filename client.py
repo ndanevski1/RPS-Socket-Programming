@@ -23,10 +23,8 @@ def client(player, address, port):
 			result = sock.recv(128)
 			countdown_output()
 			print_result(int(result.decode()))
-
 		finally:
 			terminate = True
-		    # print >>sys.stderr, 'closing socket'
 	sock.close()
 
 def countdown_output():

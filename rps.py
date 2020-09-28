@@ -1,11 +1,6 @@
 from client import client
 from server import server
-
 import sys
-
-# print(sys.argv[0])
-
-
 
 def main():
 	if(sys.argv[2] == "client"):
